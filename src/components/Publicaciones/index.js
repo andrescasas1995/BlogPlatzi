@@ -6,9 +6,14 @@ import * as publicacionesActions from '../../actions/publicacionesActions';
 
 import Spinner from "../General/Spinner";
 import Fatal from "../General/Fatal";
+import Comentarios from "./Comentarios";
 
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
-const { traerPorUsuario: publicacionesTraerPorUsuario, abrirCerrar } = publicacionesActions;
+const { 
+    traerPorUsuario: publicacionesTraerPorUsuario, 
+    abrirCerrar,
+    traerComentarios
+} = publicacionesActions;
 
 class Publicaciones extends Component {
 
@@ -86,7 +91,7 @@ class Publicaciones extends Component {
 			<div
 				key={publicacion.id}
 				className='pub_titulo'
-				onClick={ () => this.props.abrirCerrar(pub_key, com_key) }
+				onClick={ () => this.mostrarComentarios(pub_key, com_key, publicacion.comentarios) }
 			>
 				<h2>
 					{ publicacion.title }
@@ -95,11 +100,18 @@ class Publicaciones extends Component {
 					{ publicacion.body }
 				</h3>
                 {
-                    (publicacion.abierto) ? "Abierto" : "Cerrado"
+                    (publicacion.abierto) ? <Comentarios /> : ""
                 }
 			</div>
 		))
-	);
+    );
+    
+    mostrarComentarios = (pub_key, com_key, comentarios) => {
+        this.props.abrirCerrar(pub_key, com_key);
+        if (!comentarios.length) {
+            this.props.traerComentarios(pub_key, com_key);
+        }
+    }
 
     render(){
         return(
@@ -121,7 +133,8 @@ const mapStateToProps = ({usuariosReducer, publicacionesReducer}) => {
 const mapDispatchToProps = ({
     usuariosTraerTodos,
     publicacionesTraerPorUsuario,
-    abrirCerrar
+    abrirCerrar,
+    traerComentarios
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones);
