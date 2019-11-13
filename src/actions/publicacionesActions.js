@@ -50,7 +50,6 @@ export const traerPorUsuario = (key) => async (dispatch, getState) => {
 		});
 	}
 	catch (error) {
-		console.log(error.message);
 		dispatch({
 			type: ERROR,
 			payload: 'Publicaciones no disponibles.'
@@ -109,7 +108,6 @@ export const traerComentarios = (pub_key, com_key) => async (dispatch, getState)
 		});
 	}
 	catch (error) {
-		console.log(error.message);
 		dispatch({
 			type: COM_ERROR,
 			payload: 'Comentarios no disponibles.'
